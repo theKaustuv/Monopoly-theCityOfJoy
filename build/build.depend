@@ -7,22 +7,23 @@
 	"Player.h"
 	"realEstate.h"
 
-1461407998 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basicfunctions.h
+1461414797 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basicfunctions.h
 
-1461411806 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\property.h
+1461412467 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\property.h
 	<string>
 
-1461407918 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\player.h
+1461412467 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\player.h
+	<string>
 
 1461411327 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\realestate.h
 
-1461411984 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\main.cpp
+1461415927 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\main.cpp
 	<iostream>
 	<string>
-	"basicFunctions.h"
+	<limits>
+	"BaseFunctions.h"
 	"Property.h"
 	"Player.h"
-	"realEstate.h"
 
 1461411408 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\player.cpp
 	<iostream>
@@ -47,4 +48,62 @@
 	"Property.h"
 	"Player.h"
 	"realEstate.h"
+
+1461413469 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\chancecc.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"ChanceCC.h"
+
+1461413115 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\chancecc.h
+
+1461413483 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\jail.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"Jail.h"
+
+1461413164 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\jail.h
+
+1461413486 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\railroad.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"Railroad.h"
+
+1461412917 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\railroad.h
+
+1461413453 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\specialproperties.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"SpecialProperties.h"
+
+1461412995 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\specialproperties.h
+
+1461413486 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\utility.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"Utility.h"
+
+1461412947 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\utility.h
+
+1461417025 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp
+	<iostream>
+	<cstdlib>
+	<ctime>
+	"BaseFunctions.h"
+
+1461415897 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.h
 

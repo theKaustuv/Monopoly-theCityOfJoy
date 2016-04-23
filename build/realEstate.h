@@ -2,10 +2,10 @@
 #define REALESTATE_H
 
 
-class realEstate
+class RealEstate
 {
     public:
-        realEstate();
+        RealEstate();
     protected:
     private:
 };

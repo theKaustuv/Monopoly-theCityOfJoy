@@ -3,11 +3,11 @@
 #include "basicFunctions.h"
 #include "Property.h"
 #include "Player.h"
-#include "RealEstate.h"
+#include "Railroad.h"
 
 using namespace std;
 
-RealEstate::RealEstate()
+Railroad::Railroad()
 {
     //ctor
 }
