@@ -28,17 +28,17 @@ propertyMortgage(false)
 
 }
 
-Property::Property(string Name,string Type, int Pos, int Value)
-:propertyName(Name),
-propertyType(Type),
-propertyPosition(Pos),
-propertyOwner(-1),
-propertyValue(Value),
-propertyMortgage(false)
-{
-
-
-}
+//Property::Property(string Name,string Type, int Pos, int Value)
+//:propertyName(Name),
+//propertyType(Type),
+//propertyPosition(Pos),
+//propertyOwner(-1),
+//propertyValue(Value),
+//propertyMortgage(false)
+//{
+//
+//
+//}
 
 void Property::setPropertyOwner(int playerNum){
 

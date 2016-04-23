@@ -7,6 +7,12 @@
 
 using namespace std;
 
+/* initialize game */
+int rent[6] = {1,2,3,4,5,6};
+Property Mediterrenean("Mediterrenean","RealEstate", 1, 60, rent );
+
+/* end */
+
 int main(){
 
 

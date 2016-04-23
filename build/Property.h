@@ -1,5 +1,6 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -7,7 +8,8 @@ using namespace std;
 class Property
 {
     public:
-        Property(string Name,string Type, int Pos, int Value);
+        Property(string Name,string Type, int Pos, int Value, int rent[6]);
+        //Property(string Name,string Type, int Pos, int Value);
         void setPropertyOwner(int playerNum);
         int getPropertyOwner();
         void setPropertyMortgage(bool Val);
