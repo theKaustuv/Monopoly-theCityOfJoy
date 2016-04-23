@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "basicFunctions.h"
+#include "BaseFunctions.h"
 #include "Property.h"
 #include "Player.h"
 #include "RealEstate.h"
