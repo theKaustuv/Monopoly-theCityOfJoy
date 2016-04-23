@@ -1,0 +1,50 @@
+# depslib dependency file v1.0
+1461411408 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basicfunctions.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"realEstate.h"
+
+1461407998 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basicfunctions.h
+
+1461411806 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\property.h
+	<string>
+
+1461407918 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\player.h
+
+1461411327 d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\realestate.h
+
+1461411984 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\main.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"realEstate.h"
+
+1461411408 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\player.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"realEstate.h"
+
+1461412002 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\property.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"realEstate.h"
+
+1461411626 source:d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\realestate.cpp
+	<iostream>
+	<string>
+	"basicFunctions.h"
+	"Property.h"
+	"Player.h"
+	"realEstate.h"
+
