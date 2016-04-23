@@ -10,7 +10,6 @@ using namespace std;
 int main(){
 
 
-
 cout << "Press ENTER to finish...";
 cin.ignore( numeric_limits<streamsize>::max(), '\n' );
 

@@ -9,8 +9,12 @@ class Player
 {
     public:
         Player();
-    protected:
+
     private:
+        int numRailroadsOwned;
+        int numUtilitiesOwned;
+        bool isInJail;
+        int turnsInjail;
 };
 
 #endif // PLAYER_H

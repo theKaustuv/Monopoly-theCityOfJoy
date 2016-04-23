@@ -7,12 +7,22 @@ using namespace std;
 class Property
 {
     public:
-        Property(string Name,string Type);
-
+        Property(string Name,string Type, int Pos, int Value);
+        void setPropertyOwner(int playerNum);
+        int getPropertyOwner();
+        void setPropertyMortgage(bool Val);
+        bool getPropertyMortgage();
+        int getPropertyValue();
+        int getPropertyPosition();
+        string getPropertyName();
+        string getPropertyType();
     private:
-        string PropertyName;
-        string propertyType;
+        const string propertyName;
+        const string propertyType;
+        const int propertyPosition;
         int propertyOwner;
+        const int propertyValue;
+        bool propertyMortgage;
 
 };
 
