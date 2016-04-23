@@ -5,10 +5,10 @@
 class RealEstate
 {
     public:
-        RealEstate(int r[6], int Pos);
-
+        RealEstate(int r0,int r1,int r2,int r3,int r4, int r5, int Pos);
+		
     private:
-        const int rent[6];
+        int rent[6];
         int numOfHouses;
         bool hotel;
         const int improvementCost;

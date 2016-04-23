@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Property::Property(string Name,string Type, int Pos, int Value, int rent[6])
+Property::Property(string Name,string Type, int Pos, int Value, int r0,int r1,int r2,int r3,int r4, int r5)
 :propertyName(Name),
 propertyType(Type),
 propertyPosition(Pos),
@@ -16,29 +16,29 @@ propertyValue(Value),
 propertyMortgage(false)
 {
     if (getPropertyType()=="RealEstate")
-        RealEstate propertyAttributes(rent,Pos);
-    else if (getPropertyType()=="Railroad")
+        RealEstate propertyAttributes(r0, r1, r2, r3, r4, r5,Pos);
+    else if (getPropertyType()=="Railroad");
         // do we really need Railroad class? we can just multiply 25*number of railroads owned
-    else if (getPropertyType()=="Utility")
+    else if (getPropertyType()=="Utility");
         //same as railroads
-    else if (getPropertyType()=="ChanceCC")
+    else if (getPropertyType()=="ChanceCC");
         //draw a card randomly
-    else if (getPropertyType()=="Jail")
+    else if (getPropertyType()=="Jail");
 
 
 }
 
-//Property::Property(string Name,string Type, int Pos, int Value)
-//:propertyName(Name),
-//propertyType(Type),
-//propertyPosition(Pos),
-//propertyOwner(-1),
-//propertyValue(Value),
-//propertyMortgage(false)
-//{
-//
-//
-//}
+Property::Property(string Name,string Type, int Pos, int Value)
+:propertyName(Name),
+propertyType(Type),
+propertyPosition(Pos),
+propertyOwner(-1),
+propertyValue(Value),
+propertyMortgage(false)
+{
+
+
+}
 
 void Property::setPropertyOwner(int playerNum){
 

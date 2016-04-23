@@ -11,7 +11,7 @@ class Player
         Player();
 
     private:
-        const string playerName;
+        /*const string playerName;
         const int playerNum;
         int playerPosition;
         int moneyInHand;
@@ -19,7 +19,7 @@ class Player
         int numUtilitiesOwned;
         bool isInJail;
         int turnsInjail;
-        bool isBankrupt;
+        bool isBankrupt;*/
 };
 
 #endif // PLAYER_H

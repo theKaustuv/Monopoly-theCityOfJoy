@@ -8,13 +8,14 @@
 using namespace std;
 
 /* initialize game */
-int rent[6] = {1,2,3,4,5,6};
-Property Mediterrenean("Mediterrenean","RealEstate", 1, 60, rent );
+
+Property Mediterrenean("Mediterrenean","RealEstate", 1, 60, /*rents:*/ 1,2,3,4,5,6 );
 
 /* end */
 
 int main(){
 
+	cout << Mediterrenean.getPropertyName() << endl;
 
 cout << "Press ENTER to finish...";
 cin.ignore( numeric_limits<streamsize>::max(), '\n' );

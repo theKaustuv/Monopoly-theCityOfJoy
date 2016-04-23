@@ -8,8 +8,8 @@ using namespace std;
 class Property
 {
     public:
-        Property(string Name,string Type, int Pos, int Value, int rent[6]);
-        //Property(string Name,string Type, int Pos, int Value);
+        Property(string Name,string Type, int Pos, int Value, int r0,int r1,int r2,int r3,int r4, int r5);
+        Property(string Name,string Type, int Pos, int Value);
         void setPropertyOwner(int playerNum);
         int getPropertyOwner();
         void setPropertyMortgage(bool Val);
