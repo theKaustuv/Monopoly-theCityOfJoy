@@ -58,14 +58,18 @@ Property* board[40] = {&passGo,&mediterraneanAvenue,&cc1,&balticAvenue,&incomeTa
 
 /* end */
 /* variables */
-int num;
+int temporaryIntegerValue;
+int	playersRemaining; // 1 to numberOfPlayers in value
+int	activePlayer=0; // 0 to numberOfPlayers-1 in value
+bool forcedExit = false;
 int i;
 string name[4] = {};
 /* end */
 /* initialize players */
 cout << "Enter Number of Players (2 to 4 players only):";
-cin >> num;
-for(i=0;i<num;i++){
+cin >> temporaryIntegerValue;
+const int numberOfPlayers = temporaryIntegerValue; // 2 to 4 in value
+for(i=0;i<numberOfPlayers;i++){
 	cout << "Enter Player " << i+1 << " Name: ";
 	getline(cin >> ws,name[i]);
 }
@@ -74,8 +78,27 @@ Player player1(name[0],0);Player player2(name[1],1);Player player3(name[2],2);Pl
 Player* players[4] = {&player1, &player2, &player3, &player4};
 
 /* end */
+cout << "Let's Play!!" << endl;
+playersRemaining = numberOfPlayers;
+activePlayer = chooseStartingPlayer(numberOfPlayers);
+cout << players[activePlayer]->getPlayerName() << " gets to go first" << endl;
+do{
+turn(&players[0], &board[0], activePlayer);
+activePlayer = changeActivePlayer(&players[0],activePlayer,numberOfPlayers);
+cout << "It's "<< players[activePlayer]->getPlayerName() << "'s turn now.\n Press Enter to Proceed.." << endl;
+cin.ignore( numeric_limits<streamsize>::max(), '\n' );
+}while(playersRemaining > 1 && forcedExit == false);
 
-cout << "Press ENTER to finish...";
+// winning sequence
+if (playersRemaining == 1){
+	for (i=0;i<numberOfPlayers;i++){
+		if (players[i]->getIsBankrupt() == false)
+			cout << "\nCONGRATULATIONS\n"<<players[i]->getPlayerName() << " WINS!!" << endl;
+	}
+}
+// end
+
+cout << "Thank You for Playing...\nPress ENTER to finish...";
 cin.ignore( numeric_limits<streamsize>::max(), '\n' );
 
 return 0;
