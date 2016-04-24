@@ -13,30 +13,57 @@ propertyType(Type),
 propertyPosition(Pos),
 propertyOwner(-1),
 propertyValue(Value),
-propertyMortgage(false)
+propertyMortgage(false),
+realEstate(r0, r1, r2, r3, r4, r5,Pos)
 {
-    if (getPropertyType()=="RealEstate")
-        RealEstate propertyAttributes(r0, r1, r2, r3, r4, r5,Pos);
-    else if (getPropertyType()=="Railroad");
-        // do we really need Railroad class? we can just multiply 25*number of railroads owned
-    else if (getPropertyType()=="Utility");
-        //same as railroads
-    else if (getPropertyType()=="ChanceCC");
-        //draw a card randomly
-    else if (getPropertyType()=="Jail");
-
-
+    
 }
 
-Property::Property(string Name,string Type, int Pos, int Value)
+Property::Property(string Name,string Type, int Pos, int Value, int r0,int r1,int r2,int r3)
 :propertyName(Name),
 propertyType(Type),
 propertyPosition(Pos),
 propertyOwner(-1),
 propertyValue(Value),
-propertyMortgage(false)
+propertyMortgage(false),
+realEstate(r0, r1, r2, r3, /*these values will never be used :*/ -1, -1, 100)
 {
 
+}
+
+Property::Property(string Name,string Type, int Pos, int Value, int r0,int r1)
+:propertyName(Name),
+propertyType(Type),
+propertyPosition(Pos),
+propertyOwner(-1),
+propertyValue(Value),
+propertyMortgage(false),
+realEstate(r0, r1,/*these values will never be used :*/ -1, -1, -1, -1, 100)
+{
+
+}
+
+Property::Property(string Name,string Type, int Pos, int baseRent)
+:propertyName(Name),
+propertyType(Type),
+propertyPosition(Pos),
+propertyOwner(-1),
+propertyValue(-1),
+propertyMortgage(false),
+realEstate(baseRent, /*these values will never be used :*/ -1, -1, -1, -1, -1, 100)
+{
+
+}
+
+Property::Property(string Name,string Type, int Pos)
+:propertyName(Name),
+propertyType(Type),
+propertyPosition(Pos),
+propertyOwner(-1),
+propertyValue(-1),
+propertyMortgage(false),
+realEstate(/*these values will never be used :*/ -1, -1, -1, -1, -1, -1, 100)
+{
 
 }
 
