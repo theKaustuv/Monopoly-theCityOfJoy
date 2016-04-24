@@ -27,7 +27,7 @@ class Player
 		int getNumGetOutOfJailFreeCard();
 		void setIsInJail(int n);
 		int getIsInJail();
-		void setIsBankrupt(bool val);
+		void setIsBankrupt();
 		bool getIsBankrupt();
 
 

@@ -10,7 +10,7 @@
 using namespace std;
 
 void turn(Player** players, Property** board, int activePlayer){
-
+	
 }
 
 int changeActivePlayer(Player** players, int activePlayer,int numberOfPlayers){

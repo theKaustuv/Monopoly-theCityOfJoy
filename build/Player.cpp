@@ -100,8 +100,8 @@ int Player::getIsInJail(){
 	return isInJail;
 }
 
-void Player::setIsBankrupt(bool val){
-	isBankrupt = val;
+void Player::setIsBankrupt(){
+	isBankrupt = true;
 }
 
 bool Player::getIsBankrupt(){
