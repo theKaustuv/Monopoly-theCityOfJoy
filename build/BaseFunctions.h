@@ -10,10 +10,30 @@
 using namespace std;
 
 
-void turn(Player** players, Property** board, int activePlayer);
+void turn(Player** players, Property** board,int* activePlayer,const int* numberOfPlayers,bool* forcedExit,int* playersRemaining);
+
+// functions in 'turn()'
+
+void displayTurnOptions(int* playthisTurn);
+
+
+void sendPlayerToJail(Player** players, int* activePlayer);
+void throwDice(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers, int* playthisTurn, int* bankruptInflictingPlayer);
+//todo
+void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
+//todo
+void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
+//todo
+void handoverProperty(Player** players, Property** board, int propertyPos, int givingPlayer, int receivingPlayer);
+void handoverAllProperties(Player** players, Property** board, int* activePlayer, int* bankruptInflictingPlayer);
+
+//end
+
 int changeActivePlayer(Player** players,int activePlayer,int numberOfPlayers);
 int rollDice(int numberOfDice);
+int rollTwoDice(bool* doubleDice);
 int chooseStartingPlayer(int numberOfPlayers);
+bool areYouSure(string s);
 int randomNum(int lowerLim,int upperLim, int numberOfNumbers);
 
 
