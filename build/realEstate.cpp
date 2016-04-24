@@ -21,3 +21,25 @@ improvementCost( ( (Pos/10)+1 )*50  )
 	rent[5] = r5;
 
 }
+
+// Getters and Setters
+
+void RealEstate::setNumOfHouses(int n){
+	numOfHouses = n;
+}
+
+int RealEstate::getNumOfHouses(){
+	return numOfHouses;
+}
+
+void RealEstate::setHotel(bool val){
+	hotel = val;
+}
+
+bool RealEstate::getHotel(){
+	return hotel;
+}
+
+
+
+// end

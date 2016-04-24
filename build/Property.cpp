@@ -7,6 +7,9 @@
 
 using namespace std;
 
+
+// Overloaded Constructors
+
 Property::Property(string Name,string Type, int Pos, int Value, int r0,int r1,int r2,int r3,int r4, int r5)
 :propertyName(Name),
 propertyType(Type),
@@ -67,6 +70,8 @@ realEstate(/*these values will never be used :*/ -1, -1, -1, -1, -1, -1, 100)
 
 }
 
+// end
+// Getters and Setters
 void Property::setPropertyOwner(int playerNum){
 
     propertyOwner=playerNum;
@@ -106,3 +111,6 @@ string Property::getPropertyType(){
 
     return propertyType;
 }
+
+
+// end

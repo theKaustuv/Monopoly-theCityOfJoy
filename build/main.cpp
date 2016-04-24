@@ -10,7 +10,7 @@ using namespace std;
 
 int main(){
 
-/* initialize game */
+/* initialize Board */
 
 Property passGo					(/*name:*/ "PASS/GO",					/*type:*/ "MoneyProperties",		/*position:*/ 0,			/* base rents:*/ -200);
 Property mediterraneanAvenue	(/*name:*/ "Mediterranean Avenue",		/*type:*/ "RealEstate",				/*position:*/ 1,	/*value:*/ 60,		/*rents:*/ 2,	 10,	 30,	 90,	160,	 250 );
@@ -57,10 +57,24 @@ Property* board[40] = {&passGo,&mediterraneanAvenue,&cc1,&balticAvenue,&incomeTa
 
 
 /* end */
+/* variables */
+int num;
+int i;
+string name[4] = {};
+/* end */
+/* initialize players */
+cout << "Enter Number of Players (2 to 4 players only):";
+cin >> num;
+for(i=0;i<num;i++){
+	cout << "Enter Player " << i+1 << " Name: ";
+	getline(cin >> ws,name[i]);
+}
 
-	
-for (int i=0;i<40;i++)
-	cout << board[i]->getPropertyName() << endl;
+Player player1(name[0],0);Player player2(name[1],1);Player player3(name[2],2);Player player4(name[3],3);
+Player* players[4] = {&player1, &player2, &player3, &player4};
+
+/* end */
+
 cout << "Press ENTER to finish...";
 cin.ignore( numeric_limits<streamsize>::max(), '\n' );
 

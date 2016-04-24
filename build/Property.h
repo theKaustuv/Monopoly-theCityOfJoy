@@ -14,14 +14,15 @@ class Property
         Property(string Name,string Type, int Pos, int Value, int r0,int r1);
 		Property(string Name,string Type, int Pos, int baseRent);
 		Property(string Name,string Type, int Pos);
-        void setPropertyOwner(int playerNum);
-        int getPropertyOwner();
-        void setPropertyMortgage(bool Val);
-        bool getPropertyMortgage();
-        int getPropertyValue();
-        int getPropertyPosition();
         string getPropertyName();
         string getPropertyType();
+        int getPropertyPosition();
+		void setPropertyOwner(int playerNum);
+        int getPropertyOwner();
+		int getPropertyValue();
+        void setPropertyMortgage(bool Val);
+        bool getPropertyMortgage();
+                
     private:
         const string propertyName;
         const string propertyType;
