@@ -63,7 +63,8 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 
 	/* local variables */
 	int diceThrowOutcome;
-	bool* doubleDice; *doubleDice = false;
+	bool* doubleDice;
+	*doubleDice = false;
 	/* end */
 	if (*playthisTurn == 0)
 		cout << "You have no more Dice Rolls left for this turn.\nYou can trade, Manage your properties or End your turn" << endl;
@@ -230,13 +231,40 @@ void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer
 	
 	
 	}
+	else
+		cout << "Sorry. The trade could not be completed." << endl;
 	// end
 
 }
 
 void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers){
-//todo
 
+	// local variables
+	int propertyToManage = -1;
+	int managingOption = -1;
+	// end
+
+	displayManageableProperties(&players[0], &board[0], *activePlayer);
+	
+	while(propertyToManage == -1){
+		cout << "Enter Valid Corresponding Number to the property you want to manage: (-999 to exit)" << endl;
+		cin >> propertyToManage;
+		if (propertyToManage == -999)
+			break;
+		else if (propertyToManage < 0 || propertyToManage > 39)
+			propertyToManage = 0;
+		if(board[propertyToManage]->getPropertyOwner() != players[*activePlayer]->getPlayerNum())
+			propertyToManage = -1;
+	}
+	if (propertyToManage != -999){
+
+		managingOption = chooseManagingOptionForGivenProperty(&board[0], propertyToManage);
+		if (managingOption == 1 || managingOption == 2)
+			mortgageUnmortgageProperty(&players[0], &board[0], *activePlayer, propertyToManage, ( managingOption - 1 ) );
+		else if (managingOption == 3)
+			improveProperty(&players[0], &board[0], *activePlayer, propertyToManage);
+	
+	}
 }
 
 int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers){
@@ -253,6 +281,31 @@ int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPl
 	}while(players[tradingPlayer]->getPlayerNum() == activePlayer || players[tradingPlayer]->getIsBankrupt() == true );
 	return tradingPlayer;
 	
+}
+
+int chooseManagingOptionForGivenProperty(Property** board, int propertyToManage){
+
+	// local variables
+	int managingOption = -1;
+	// end
+
+	cout << board[propertyToManage]->getPropertyName() << "  Type: " << board[propertyToManage]->getPropertyType() <<"  Value: " << board[propertyToManage]->getPropertyValue() << endl;
+	if (board[propertyToManage]->getPropertyMortgage() == false)
+		cout << "1 - Mortgage Available for " << 0.5*( board[propertyToManage]->getPropertyValue() ) << endl;
+	else
+		cout << "2 - Unmortgage Available for " << 0.6*( board[propertyToManage]->getPropertyValue() ) << endl;
+	if ( (board[propertyToManage]->getPropertyGroupOwned() == true) && (board[propertyToManage]->getPropertyType() == "RealEstate") )
+		cout << "3 - Improve Property" << endl;
+
+	cout << "Enter Valid Corresponding Number to Manage Property or enter any other number to exit: ";
+	cin >> managingOption;
+	
+	if (managingOption == 1 && board[propertyToManage]->getPropertyMortgage() == false);
+	else if (managingOption == 2 && board[propertyToManage]->getPropertyMortgage() == true);
+	else if ( managingOption == 3 && (board[propertyToManage]->getPropertyGroupOwned() == true) && (board[propertyToManage]->getPropertyType() == "RealEstate") );
+	else
+		managingOption = -1;
+	return managingOption;
 }
 
 void displayTradingProperties(Player** players, Property** board, int activePlayer, int tradingPlayer){
@@ -284,6 +337,113 @@ void displayTradingProperties(Player** players, Property** board, int activePlay
 	cout << players[activePlayer]->getNumGetOutOfJailFreeCard() << endl;
 	// end;
 	
+
+}
+
+void displayManageableProperties(Player** players, Property** board, int activePlayer){
+
+	cout << players[activePlayer]->getPlayerName() << "'s Properties:" << endl;
+	for (int i=0;i<39;i++){
+		if (board[i]->getPropertyOwner() == players[activePlayer]->getPlayerNum()){
+			cout << "Number: " << board[i]->getPropertyPosition() << "  Property: " << board[i]->getPropertyName() << "  Type: " << board[i]->getPropertyType() <<"  Value: " << board[i]->getPropertyValue() << endl;
+			if (board[i]->getPropertyMortgage() == false)
+				cout << "Mortgage Available\t";
+			else
+				cout << "Unmortgage Available\t";
+			if ( (board[i]->getPropertyGroupOwned() == true) && (board[i]->getPropertyType() == "RealEstate") )
+				cout << "Property Improvement Available" << endl;
+		}
+	
+	}
+	
+}
+
+void mortgageUnmortgageProperty(Player** players, Property** board, int activePlayer, int propertyToManage, int mortgageUnmortgageOption /* 0 - Mortgage 1- Unmortgage */){
+
+	//local variables
+
+	// end
+	if (mortgageUnmortgageOption == 0 && board[propertyToManage]->getPropertyMortgage() == false){
+
+		if (board[propertyToManage]->realEstate.getHotel() == true){
+			board[propertyToManage]->realEstate.setHotel(false);
+			players[activePlayer]->setMoneyInHand( players[activePlayer]->getMoneyInHand() + 0.7*board[propertyToManage]->realEstate.getImprovementCost() );
+		}
+
+		
+		players[activePlayer]->setMoneyInHand( players[activePlayer]->getMoneyInHand() + 0.7*board[propertyToManage]->realEstate.getNumOfHouses()*board[propertyToManage]->realEstate.getImprovementCost() );
+		board[propertyToManage]->realEstate.setNumOfHouses(0);
+
+		board[propertyToManage]->setPropertyMortgage(true);
+		players[activePlayer]->setMoneyInHand( players[activePlayer]->getMoneyInHand() + 0.5*board[propertyToManage]->getPropertyValue() );
+	
+		cout << "Mortgaging Done Successfully." << endl;
+	}
+	else if (mortgageUnmortgageOption == 1 && board[propertyToManage]->getPropertyMortgage() == true){
+
+		if (players[activePlayer]->getMoneyInHand() >= 0.6*board[propertyToManage]->getPropertyValue()){
+
+			board[propertyToManage]->setPropertyMortgage(false);
+			players[activePlayer]->setMoneyInHand( players[activePlayer]->getMoneyInHand() - 0.6*board[propertyToManage]->getPropertyValue() );
+			cout << "Unmortgaging Done Successfully." << endl;
+		}
+		else
+			cout << "Unmortgaging Unsuccessfull. Player does not have enough money." << endl;
+	
+	}
+	else
+		cout << "Sorry.Request could not be completed." << endl;
+
+}
+
+void improveProperty(Player** players, Property** board, int activePlayer, int propertyToManage){
+
+	// local variables
+	int buildDestroyOption = -1;
+	int buildDestroyAmount = -1;
+	int maxBuildDestroyAmount = -1;
+	// end;
+	if (board[propertyToManage]->getPropertyOwner() == players[activePlayer]->getPlayerNum() && board[propertyToManage]->getPropertyMortgage() == false && board[propertyToManage]->getPropertyGroupOwned() == true && board[propertyToManage]->getPropertyType() == "RealEstate"){
+		
+		while(buildDestroyOption == -1){
+
+			cout << "Enter 1 - Build On Property   2 - Remove from Property   -999 to exit" << endl;
+			cin >> buildDestroyOption;
+			if (buildDestroyOption == -999);
+			else if (buildDestroyOption == 1){
+				// build on property
+				if (board[propertyToManage]->realEstate.getHotel() == true)
+					cout << "Improvements are at a max for this property." << endl;
+				else{
+
+					maxBuildDestroyAmount = 5 - board[propertyToManage]->realEstate.getNumOfHouses();
+					cout << "Enter the number of houses/hotels to build: (max " << maxBuildDestroyAmount  << ") Enter anything else to make no change" << endl;
+					cin >> buildDestroyAmount;
+					if (buildDestroyAmount < 1 || buildDestroyAmount > maxBuildDestroyAmount)
+						buildDestroyAmount = 0;
+					if (players[activePlayer]->getMoneyInHand() >= buildDestroyAmount*board[propertyToManage]->realEstate.getImprovementCost()){
+
+						board[propertyToManage]->realEstate.setNumOfHouses(board[propertyToManage]->realEstate.getNumOfHouses() + buildDestroyAmount);
+						if (board[propertyToManage]->realEstate.getNumOfHouses() > 4){
+							board[propertyToManage]->realEstate.setNumOfHouses(4);
+							board[propertyToManage]->realEstate.setHotel(true);
+						}
+						players[activePlayer]->setMoneyInHand(players[activePlayer]->getMoneyInHand() - buildDestroyAmount*board[propertyToManage]->realEstate.getImprovementCost());
+					
+					
+					}
+					else
+						cout << "Player does not have required money." << endl;
+				}
+			
+			}
+			else if (buildDestroyOption == 2);// todo
+			else
+				buildDestroyOption = -1;
+		}
+	}
+	else
+		cout << "Sorry. This Property cannot be improved upon." << endl;
 
 }
 

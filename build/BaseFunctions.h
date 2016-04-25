@@ -26,8 +26,13 @@ void displayTradingProperties(Player** players, Property** board, int activePlay
 void handoverMoney(Player** players, int givingPlayer, int receivingPlayer, int amount);
 void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
 
-void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
+void displayManageableProperties(Player** players, Property** board, int activePlayer);
+int chooseManagingOptionForGivenProperty(Property** board, int propertyToManage);
+void mortgageUnmortgageProperty(Player** players, Property** board, int activePlayer, int propertyToManage, int mortgageUnmortgageOption /* 0 - Mortgage 1- Unmortgage */);
+void improveProperty(Player** players, Property** board, int activePlayer, int propertyToManage);
 //todo
+void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
+
 void handoverProperty(Player** players, Property** board, int propertyPos, int givingPlayer, int receivingPlayer);
 void handoverAllProperties(Player** players, Property** board, int* activePlayer, int* bankruptInflictingPlayer);
 

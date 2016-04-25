@@ -10,6 +10,7 @@ class RealEstate
 		int getNumOfHouses();
 		void setHotel(bool val);
 		bool getHotel();
+		int getImprovementCost();
 
     private:
         int rent[6];

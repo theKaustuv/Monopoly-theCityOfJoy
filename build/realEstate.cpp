@@ -40,6 +40,9 @@ bool RealEstate::getHotel(){
 	return hotel;
 }
 
+int RealEstate::getImprovementCost(){
+	return improvementCost;
+}
 
 
 // end
