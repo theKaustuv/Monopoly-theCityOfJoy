@@ -22,11 +22,8 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 //todo
 
 int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers);
-//todo
 void displayTradingProperties(Player** players, Property** board, int activePlayer, int tradingPlayer);
-//todo
 void handoverMoney(Player** players, int givingPlayer, int receivingPlayer, int amount);
-// todo
 void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
 
 void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);

@@ -239,12 +239,79 @@ void manageProperties(Player** players, Property** board, int* activePlayer, con
 
 }
 
-int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers){return 0;}
-//todo
-void displayTradingProperties(Player** players, Property** board, int activePlayer, int tradingPlayer){}
-//todo
-void handoverMoney(Player** players, int givingPlayer, int receivingPlayer, int amount){}
-// todo
+int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers){
+	int tradingPlayer = -1;
+	for (int i=0;i<numberOfPlayers;i++){
+		if (players[i]->getPlayerNum() != activePlayer && players[i]->getIsBankrupt() == false)
+			cout << players[i]->getPlayerNum() << " - " << players[i]->getPlayerName() << endl;
+	}
+	do{
+		cout << "Enter Valid Corresponding Number for the Player to trade with: " << endl;
+		cin >> tradingPlayer;
+		if (tradingPlayer < 0 || tradingPlayer >= numberOfPlayers)
+			tradingPlayer = activePlayer;
+	}while(players[tradingPlayer]->getPlayerNum() == activePlayer || players[tradingPlayer]->getIsBankrupt() == true );
+	return tradingPlayer;
+	
+}
+
+void displayTradingProperties(Player** players, Property** board, int activePlayer, int tradingPlayer){
+	int i;
+	// for trading player
+	cout << players[tradingPlayer]->getPlayerName() << "'s Properties:" << endl;
+	for (i=0;i<39;i++){
+		if (board[i]->getPropertyOwner() == players[tradingPlayer]->getPlayerNum())
+			cout << "Number: " << board[i]->getPropertyPosition() << "  Property: " << board[i]->getPropertyName() << "  Type: " << board[i]->getPropertyType() <<"  Value: " << board[i]->getPropertyValue() << "  Mortgaged? " << board[i]->getPropertyMortgage() << endl; 
+	
+	}
+	cout << players[tradingPlayer]->getPlayerName() << "'s Money In Hand: ";
+	cout << players[tradingPlayer]->getMoneyInHand() << endl;
+	
+	cout << players[tradingPlayer]->getPlayerName() << "'s number of Get out of Jail Free Cards: ";
+	cout << players[tradingPlayer]->getNumGetOutOfJailFreeCard() << endl;
+	// end
+	// for active player
+	cout << players[activePlayer]->getPlayerName() << "'s Properties:" << endl;
+	for (i=0;i<39;i++){
+		if (board[i]->getPropertyOwner() == players[activePlayer]->getPlayerNum())
+			cout << "Number: " << board[i]->getPropertyPosition() << "  Property: " << board[i]->getPropertyName() << "  Type: " << board[i]->getPropertyType() <<"  Value: " << board[i]->getPropertyValue() << "  Mortgaged? " << board[i]->getPropertyMortgage() << endl; 
+	
+	}
+	cout << players[activePlayer]->getPlayerName() << "'s Money In Hand: ";
+	cout << players[activePlayer]->getMoneyInHand() << endl;
+	
+	cout << players[activePlayer]->getPlayerName() << "'s number of Get out of Jail Free Cards: ";
+	cout << players[activePlayer]->getNumGetOutOfJailFreeCard() << endl;
+	// end;
+	
+
+}
+
+void handoverMoney(Player** players, int givingPlayer, int receivingPlayer, int amount){
+
+	if (amount == 0);
+	else if (amount > 0 /* giving -> receiving */){
+		if(amount <= players[givingPlayer]->getMoneyInHand()){
+			players[givingPlayer]->setMoneyInHand(players[givingPlayer]->getMoneyInHand() - amount);
+			players[receivingPlayer]->setMoneyInHand(players[receivingPlayer]->getMoneyInHand() + amount);
+		}
+		else
+			cout << "Could not process request" << endl;
+	}
+	else if (amount < 0 /* giving <- receiving */){
+		amount = (-amount);
+		if(amount <= players[receivingPlayer]->getMoneyInHand()){
+			players[givingPlayer]->setMoneyInHand(players[givingPlayer]->getMoneyInHand() + amount);
+			players[receivingPlayer]->setMoneyInHand(players[receivingPlayer]->getMoneyInHand() - amount);
+		}
+		else
+			cout << "Could not process request" << endl;
+	}
+
+
+}
+
+
 void sendPlayerToJail(Player** players, int* activePlayer){
 
 	players[*activePlayer]->setIsInJail(0);
