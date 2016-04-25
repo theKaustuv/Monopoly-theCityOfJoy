@@ -437,7 +437,30 @@ void improveProperty(Player** players, Property** board, int activePlayer, int p
 				}
 			
 			}
-			else if (buildDestroyOption == 2);// todo
+			else if (buildDestroyOption == 2){
+				// Remove from Property
+				if (board[propertyToManage]->realEstate.getNumOfHouses() == 0)
+					cout << "Improvements are already at a minimum for this property." << endl;
+				else{
+
+					maxBuildDestroyAmount = board[propertyToManage]->realEstate.getNumOfHouses();
+					if (board[propertyToManage]->realEstate.getHotel() == true)
+						maxBuildDestroyAmount += 1;
+					cout << "Enter the number of houses/hotels to remove: (max " << maxBuildDestroyAmount  << ") Enter anything else to make no change" << endl;
+					cin >> buildDestroyAmount;
+					if (buildDestroyAmount < 1 || buildDestroyAmount > maxBuildDestroyAmount)
+						buildDestroyAmount = 0;
+					players[activePlayer]->setMoneyInHand(players[activePlayer]->getMoneyInHand() + 0.7*buildDestroyAmount*board[propertyToManage]->realEstate.getImprovementCost());
+					if (buildDestroyAmount > 0 && board[propertyToManage]->realEstate.getHotel() == true){
+						board[propertyToManage]->realEstate.setHotel(false);
+						buildDestroyAmount -= 1;
+					}
+					board[propertyToManage]->realEstate.setNumOfHouses(board[propertyToManage]->realEstate.getNumOfHouses() - buildDestroyAmount);
+	
+					
+				}
+			
+			}
 			else
 				buildDestroyOption = -1;
 		}

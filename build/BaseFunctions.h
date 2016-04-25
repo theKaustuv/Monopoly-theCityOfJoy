@@ -30,7 +30,6 @@ void displayManageableProperties(Player** players, Property** board, int activeP
 int chooseManagingOptionForGivenProperty(Property** board, int propertyToManage);
 void mortgageUnmortgageProperty(Player** players, Property** board, int activePlayer, int propertyToManage, int mortgageUnmortgageOption /* 0 - Mortgage 1- Unmortgage */);
 void improveProperty(Player** players, Property** board, int activePlayer, int propertyToManage);
-//todo
 void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
 
 void handoverProperty(Player** players, Property** board, int propertyPos, int givingPlayer, int receivingPlayer);
