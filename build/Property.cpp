@@ -17,6 +17,7 @@ propertyPosition(Pos),
 propertyOwner(-1),
 propertyValue(Value),
 propertyMortgage(false),
+propertyGroupOwned(false),
 realEstate(r0, r1, r2, r3, r4, r5,Pos)
 {
     
@@ -29,6 +30,7 @@ propertyPosition(Pos),
 propertyOwner(-1),
 propertyValue(Value),
 propertyMortgage(false),
+propertyGroupOwned(false),
 realEstate(r0, r1, r2, r3, /*these values will never be used :*/ -1, -1, 100)
 {
 
@@ -41,6 +43,7 @@ propertyPosition(Pos),
 propertyOwner(-1),
 propertyValue(Value),
 propertyMortgage(false),
+propertyGroupOwned(false),
 realEstate(r0, r1,/*these values will never be used :*/ -1, -1, -1, -1, 100)
 {
 
@@ -53,6 +56,7 @@ propertyPosition(Pos),
 propertyOwner(-1),
 propertyValue(-1),
 propertyMortgage(false),
+propertyGroupOwned(false),
 realEstate(baseRent, /*these values will never be used :*/ -1, -1, -1, -1, -1, 100)
 {
 
@@ -65,6 +69,7 @@ propertyPosition(Pos),
 propertyOwner(-1),
 propertyValue(-1),
 propertyMortgage(false),
+propertyGroupOwned(false),
 realEstate(/*these values will never be used :*/ -1, -1, -1, -1, -1, -1, 100)
 {
 
@@ -90,6 +95,16 @@ void Property::setPropertyMortgage(bool Val){
 bool Property::getPropertyMortgage(){
 
     return propertyMortgage;
+}
+
+void Property::setPropertyGroupOwned(bool Val){
+
+    propertyGroupOwned=Val;
+}
+
+bool Property::getPropertyGroupOwned(){
+
+    return propertyGroupOwned;
 }
 
 int Property::getPropertyValue(){

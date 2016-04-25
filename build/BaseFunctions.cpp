@@ -17,7 +17,7 @@ void turn(Player** players, Property** board,int* activePlayer,const int* number
 	bool assuranceVariable=false;
 	// end
 	// continually ask the player for what he wants to do
-	while(option!=-1 || option!= -999){
+	while(option!=-1 && option!= -999){
 		displayTurnOptions(&playthisTurn); //Prints out a list of options that can be availed by the player on turn, then asks him/her to choose one.
 		if ( players[*activePlayer]->getMoneyInHand() >= 0)
 			bankruptInflictingPlayer = -1;
@@ -100,7 +100,137 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 }
 
 void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers){
-//todo
+//local variables
+	int tradingPlayer = -1;
+	int tradeMoneyGet = -1;
+	int tradeMoneyGive = -1;
+	int tradeJailFreeCardGet = -1;
+	int tradeJailFreeCardGive = -1;
+	int tradeProperty = -1;
+	int propertyGet[40] = {0};
+	int propertyGive[40] = {0};
+	bool acceptProposal = false;
+	string tempString;
+//end
+	cout << "Choose Player to trade with:" << endl;
+	tradingPlayer = chooseTradingPlayer(&players[0], *activePlayer, *numberOfPlayers);
+	displayTradingProperties(&players[0], &board[0], *activePlayer, tradingPlayer);
+	cout << "Please Formulate Your Proposal:" << endl;
+	// receiving properties
+	cout << "Enter Property numbers you want to receive: (Hit -1 to finish)" << endl;
+	do
+	{
+		cin >> tradeProperty;
+		if (tradeProperty == -1);
+		else if (tradeProperty < 0 || tradeProperty > 39)
+			cout << "Please Enter a valid number." << endl;
+		else if (board[tradeProperty]->getPropertyOwner() == players[tradingPlayer]->getPlayerNum())
+			propertyGet[tradeProperty] = 1;
+		else
+			cout << "Sorry, the trading player does not posses this property. Please enter the next option." << endl;
+	} while (tradeProperty != -1);
+	// end
+	// receiving money
+	cout << "Enter Money you want to receive:" << endl;
+	while (tradeMoneyGet == -1)
+	{
+		cin >> tradeMoneyGet;
+		if (tradeMoneyGet >= 0 && tradeMoneyGet <= players[tradingPlayer]->getMoneyInHand());
+		else if (tradeMoneyGet > players[tradingPlayer]->getMoneyInHand()){
+			cout << "The trading player does not have this amount of money.Enter a valid amount." << endl;
+			tradeMoneyGet = -1;		
+		}
+		else if (tradeMoneyGet < 0){
+			cout << "Enter a valid amount." << endl;
+			tradeMoneyGet = -1;		
+		}
+	}
+	//end
+	// receiving Get Outta Jail Free Card
+	cout << "Enter Number of Get Out Of Jail Free Cards you want to receive:" << endl;
+	while (tradeJailFreeCardGet == -1)
+	{
+		cin >> tradeJailFreeCardGet;
+		if (tradeJailFreeCardGet >= 0 && tradeJailFreeCardGet <= players[tradingPlayer]->getNumGetOutOfJailFreeCard());
+		else if (tradeJailFreeCardGet > players[tradingPlayer]->getNumGetOutOfJailFreeCard()){
+			cout << "The trading player does not have this many Get Out Of Jail Free Cards.Enter a valid number." << endl;
+			tradeJailFreeCardGet = -1;		
+		}
+		else if (tradeJailFreeCardGet < 0){
+			cout << "Enter a valid number." << endl;
+			tradeJailFreeCardGet = -1;		
+		}
+	}
+	//end
+	tradeProperty = -1;
+	// giving properties
+	cout << "Enter Property numbers you want to give: (Hit -1 to finish)" << endl;
+	do
+	{
+		cin >> tradeProperty;
+		if (tradeProperty == -1);
+		else if (tradeProperty < 0 || tradeProperty > 39)
+			cout << "Please Enter a valid number." << endl;
+		else if (board[tradeProperty]->getPropertyOwner() == players[*activePlayer]->getPlayerNum())
+			propertyGive[tradeProperty] = 1;
+		else
+			cout << "Sorry, you do not posses this property. Please enter the next option." << endl;
+	} while (tradeProperty != -1);
+	// end
+	// giving money
+	cout << "Enter Money you want to give:" << endl;
+	while (tradeMoneyGive == -1)
+	{
+		cin >> tradeMoneyGive;
+		if (tradeMoneyGive >= 0 && tradeMoneyGive <= players[*activePlayer]->getMoneyInHand());
+		else if (tradeMoneyGive > players[*activePlayer]->getMoneyInHand()){
+			cout << "You do not have this amount of money.Enter a valid amount." << endl;
+			tradeMoneyGive = -1;		
+		}
+		else if (tradeMoneyGive < 0){
+			cout << "Enter a valid amount." << endl;
+			tradeMoneyGive = -1;		
+		}
+	}
+	//end
+	// giving Get Outta Jail Free Card
+	cout << "Enter Number of Get Out Of Jail Free Cards you want to give:" << endl;
+	while (tradeJailFreeCardGive == -1)
+	{
+		cin >> tradeJailFreeCardGive;
+		if (tradeJailFreeCardGive >= 0 && tradeJailFreeCardGive <= players[*activePlayer]->getNumGetOutOfJailFreeCard());
+		else if (tradeJailFreeCardGive > players[*activePlayer]->getNumGetOutOfJailFreeCard()){
+			cout << "You do not have this many Get Out Of Jail Free Cards.Enter a valid number." << endl;
+			tradeJailFreeCardGive = -1;		
+		}
+		else if (tradeJailFreeCardGive < 0){
+			cout << "Enter a valid number." << endl;
+			tradeJailFreeCardGive = -1;		
+		}
+	}
+	//end
+	// Confirmation
+	cout << "Do You " << players[tradingPlayer]->getPlayerName() << " accept the proposal? (y/n)" << endl;
+	getline(cin >> ws,tempString);
+	if (tempString == "y")
+		acceptProposal = areYouSure("");
+	// end
+	// trading occurrs
+	if (acceptProposal == true){
+		
+		players[*activePlayer]->setNumGetOutOfJailFreeCard(players[*activePlayer]->getNumGetOutOfJailFreeCard() + tradeJailFreeCardGet - tradeJailFreeCardGive);
+		players[tradingPlayer]->setNumGetOutOfJailFreeCard(players[tradingPlayer]->getNumGetOutOfJailFreeCard() - tradeJailFreeCardGet + tradeJailFreeCardGive);
+		handoverMoney(&players[0], *activePlayer, tradingPlayer, (tradeMoneyGive - tradeMoneyGet) );
+		for (int i=0;i<39;i++){
+			if (propertyGet[i] == 1)
+				handoverProperty(&players[0], &board[0], i, tradingPlayer, *activePlayer);
+			else if (propertyGive[i] == 1)
+				handoverProperty(&players[0], &board[0], i, *activePlayer, tradingPlayer);
+		}
+	
+	
+	}
+	// end
 
 }
 
@@ -109,6 +239,12 @@ void manageProperties(Player** players, Property** board, int* activePlayer, con
 
 }
 
+int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers){return 0;}
+//todo
+void displayTradingProperties(Player** players, Property** board, int activePlayer, int tradingPlayer){}
+//todo
+void handoverMoney(Player** players, int givingPlayer, int receivingPlayer, int amount){}
+// todo
 void sendPlayerToJail(Player** players, int* activePlayer){
 
 	players[*activePlayer]->setIsInJail(0);
@@ -157,8 +293,8 @@ void displayTurnOptions(int* playthisTurn){
 
 bool areYouSure(string s){
 	string match;
-	cout << "Are you sure " << s << " (enter 'yes' /anything else)" << endl; 
-	cin >> match;
+	cout << "Are you sure " << s << " (enter 'yes' /anything else)\n"; 
+	getline(cin >> ws,match);
 	if (match == "yes")
 		return true;
 	else

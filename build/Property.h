@@ -22,6 +22,8 @@ class Property
 		int getPropertyValue();
         void setPropertyMortgage(bool Val);
         bool getPropertyMortgage();
+		void setPropertyGroupOwned(bool Val);
+        bool getPropertyGroupOwned();
                 
     private:
         const string propertyName;
@@ -30,6 +32,7 @@ class Property
         int propertyOwner;
         const int propertyValue;
         bool propertyMortgage;
+		bool propertyGroupOwned;
 		RealEstate realEstate;
 };
 

@@ -20,8 +20,15 @@ void displayTurnOptions(int* playthisTurn);
 void sendPlayerToJail(Player** players, int* activePlayer);
 void throwDice(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers, int* playthisTurn, int* bankruptInflictingPlayer);
 //todo
-void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
+
+int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers);
 //todo
+void displayTradingProperties(Player** players, Property** board, int activePlayer, int tradingPlayer);
+//todo
+void handoverMoney(Player** players, int givingPlayer, int receivingPlayer, int amount);
+// todo
+void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
+
 void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers);
 //todo
 void handoverProperty(Player** players, Property** board, int propertyPos, int givingPlayer, int receivingPlayer);

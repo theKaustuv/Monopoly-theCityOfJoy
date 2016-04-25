@@ -93,9 +93,11 @@ do{
 	turn(&players[0], &board[0], &activePlayer, &numberOfPlayers, &forcedExit, &playersRemaining);
 	
 	// change turn
-	activePlayer = changeActivePlayer(&players[0],activePlayer,numberOfPlayers);
-	cout << "It's "<< players[activePlayer]->getPlayerName() << "'s turn now.\n Press Enter to Proceed.." << endl;
-	cin.ignore( numeric_limits<streamsize>::max(), '\n' );
+	if (forcedExit == false){
+		activePlayer = changeActivePlayer(&players[0],activePlayer,numberOfPlayers);
+		cout << "It's "<< players[activePlayer]->getPlayerName() << "'s turn now.\n Press Enter to Proceed.." << endl;
+		cin.ignore( numeric_limits<streamsize>::max(), '\n' );
+	}
 	// end.............and proceed to the next turn/exit
 
 }while(playersRemaining > 1 && forcedExit == false);
