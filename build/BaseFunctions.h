@@ -9,6 +9,7 @@
 
 using namespace std;
 
+void showAllPlayerDetails(Player** players, const int numberOfPlayers);
 
 void turn(Player** players, Property** board,int* activePlayer,const int* numberOfPlayers,bool* forcedExit,int* playersRemaining);
 
@@ -16,17 +17,14 @@ void turn(Player** players, Property** board,int* activePlayer,const int* number
 
 void displayTurnOptions(int* playthisTurn);
 
-
+void updatePropertyGroupOwnerships(Player** players, Property** board);
 void sendPlayerToJail(Player** players, int* activePlayer);
 
 void updatePlayerPosition(Player** players, int* activePlayer, int diceThrowOutcome);
-//todo
 void showTitleDeed(Property** board, int propertyPosition);
-//todo
-void buyProperty(Player** players, Property** board, int* activePlayer);
-//todo
-void auctionProperty(Player** players, Property** board, int propertyPosition);
-// todo
+void buyProperty(Player** players, Property** board, int* activePlayer); // from buy option
+void buyProperty(Player** players, Property** board, int propertyPosition, int biddingPlayer, int highestBid); // from auction
+void auctionProperty(Player** players, Property** board, int propertyPosition, const int numberOfPlayers);
 void throwDice(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers, int* playthisTurn, int* bankruptInflictingPlayer);
 
 int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers);

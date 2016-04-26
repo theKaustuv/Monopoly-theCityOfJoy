@@ -56,15 +56,14 @@ void turn(Player** players, Property** board,int* activePlayer,const int* number
 		handoverAllProperties(&players[0], &board[0], activePlayer, &bankruptInflictingPlayer);
 		(*playersRemaining) -= 1;
 	}
-		
+	updatePropertyGroupOwnerships(&players[0],&board[0]);
 }
 
 void throwDice(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers, int* playthisTurn, int* bankruptInflictingPlayer){
 
 	/* local variables */
 	int diceThrowOutcome;
-	bool* doubleDice;
-	*doubleDice = false;
+	bool doubleDice=false;
 	string useCardString;
 	string useBailString;
 	string landedPropertyType;
@@ -78,9 +77,9 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 	if (*playthisTurn == 0)
 		cout << "You have no more Dice Rolls left for this turn.\nYou can trade, Manage your properties or End your turn" << endl;
 	else{
-		diceThrowOutcome = rollTwoDice(doubleDice);
+		diceThrowOutcome = rollTwoDice(&doubleDice);
 		
-		if (*doubleDice == true)
+		if (doubleDice == true)
 			(*playthisTurn) += 1;
 		else
 			(*playthisTurn) = 0;
@@ -94,7 +93,7 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 
 			if (players[*activePlayer]->getIsInJail() >= 0){
 				players[*activePlayer]->setIsInJail(players[*activePlayer]->getIsInJail() + 1);
-				if (*doubleDice == true){
+				if (doubleDice == true){
 					
 					players[*activePlayer]->setIsInJail(-1);
 					updatePlayerPosition(&players[0], activePlayer, diceThrowOutcome);
@@ -147,8 +146,13 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 						else{
 							if (board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.getHotel() == true)
 								handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[5]);
-							else
-								handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.getNumOfHouses()]);
+							else{
+
+								if (board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.getNumOfHouses() != 0)
+									handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.getNumOfHouses()]);
+								else
+									handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), 2*board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[0]);
+							}
 						}
 				
 				}
@@ -179,7 +183,7 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 							manageProperties(&players[0], &board[0], activePlayer, numberOfPlayers);
 						else if (buyAuction == 4){
 						
-							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition());
+							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition(), *numberOfPlayers);
 							buyAuctionFlag = true;
 						}
 
@@ -222,7 +226,7 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 							manageProperties(&players[0], &board[0], activePlayer, numberOfPlayers);
 						else if (buyAuction == 4){
 						
-							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition());
+							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition(), *numberOfPlayers);
 							buyAuctionFlag = true;
 						}
 
@@ -266,7 +270,7 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 							manageProperties(&players[0], &board[0], activePlayer, numberOfPlayers);
 						else if (buyAuction == 4){
 						
-							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition());
+							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition(), *numberOfPlayers);
 							buyAuctionFlag = true;
 						}
 
@@ -323,25 +327,121 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 
 	
 	}
+	updatePropertyGroupOwnerships(&players[0],&board[0]);
 }
 
 void updatePlayerPosition(Player** players, int* activePlayer, int diceThrowOutcome){
-	//todo
-
+	
+	players[*activePlayer]->setPlayerPosition(players[*activePlayer]->getPlayerPosition() + diceThrowOutcome);
+	if (players[*activePlayer]->getPlayerPosition() > 39)
+		players[*activePlayer]->setPlayerPosition(players[*activePlayer]->getPlayerPosition() - 40);
 }
 
 void showTitleDeed(Property** board, int propertyPosition){
-	//todo
+	
+	cout << "TITLE DEED" << endl;
+	cout << "Property Name: " << board[propertyPosition]->getPropertyName() << endl;
+	cout << "Property Type: " << board[propertyPosition]->getPropertyType() << endl;
+	cout << "Property Value: " << board[propertyPosition]->getPropertyValue() << endl;
+	cout << "Property Rent:" << endl;
+	cout << "Basic: " << board[propertyPosition]->realEstate.rent[0] << endl;
+	cout << "With 1 house: " << board[propertyPosition]->realEstate.rent[1] << endl;
+	cout << "With 2 houses: " << board[propertyPosition]->realEstate.rent[2] << endl;
+	cout << "With 3 houses: " << board[propertyPosition]->realEstate.rent[3] << endl;
+	cout << "With 4 houses: " << board[propertyPosition]->realEstate.rent[4] << endl;
+	cout << "With hotel: " << board[propertyPosition]->realEstate.rent[5] << endl;
+
 
 }
 
 void buyProperty(Player** players, Property** board, int* activePlayer){
-	//todo
+	// from buy option
+	if (board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyValue() > players[*activePlayer]->getMoneyInHand() )
+		cout << "You Do Not Have Enough Money TO Buy This Property." << endl;
+	else{
+		players[*activePlayer]->setMoneyInHand( players[*activePlayer]->getMoneyInHand() - board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyValue() );
+		board[ players[*activePlayer]->getPlayerPosition() ]->setPropertyOwner(players[*activePlayer]->getPlayerNum());
+		players[*activePlayer]->setNumPropertiesOwned(players[*activePlayer]->getNumPropertiesOwned() + 1);
+		if (board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyType() == "Railroad")
+			players[*activePlayer]->setNumRailroadsOwned(players[*activePlayer]->getNumRailroadsOwned() + 1);
+		if (board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyType() == "Utility")
+			players[*activePlayer]->setNumUtilitiesOwned(players[*activePlayer]->getNumUtilitiesOwned() + 1);
+		updatePropertyGroupOwnerships(&players[0],&board[0]);
+
+	}
 
 }
 
-void auctionProperty(Player** players, Property** board, int propertyPosition){
-	//todo
+
+void buyProperty(Player** players, Property** board, int propertyPosition, int biddingPlayer, int highestBid){
+		// from auction
+		players[biddingPlayer]->setMoneyInHand( players[biddingPlayer]->getMoneyInHand() - highestBid );
+		board[propertyPosition]->setPropertyOwner(players[biddingPlayer]->getPlayerNum());
+		players[biddingPlayer]->setNumPropertiesOwned(players[biddingPlayer]->getNumPropertiesOwned() + 1);
+		if (board[propertyPosition]->getPropertyType() == "Railroad")
+			players[biddingPlayer]->setNumRailroadsOwned(players[biddingPlayer]->getNumRailroadsOwned() + 1);
+		if (board[propertyPosition]->getPropertyType() == "Utility")
+			players[biddingPlayer]->setNumUtilitiesOwned(players[biddingPlayer]->getNumUtilitiesOwned() + 1);
+		updatePropertyGroupOwnerships(&players[0],&board[0]);
+
+}
+
+void auctionProperty(Player** players, Property** board, int propertyPosition, const int numberOfPlayers){
+	
+	// local variables
+	int playersRemainingInTheAuction = numberOfPlayers; //random high initial count, no practical relevance
+	int biddingPlayer;
+	int inAuction[4] = {1,1,1,1};
+	int bidOption;
+	int highestBid = 0;
+	int bidIn;
+	// end
+	for (int i=0;i<numberOfPlayers;i++){
+		if (players[i]->getIsBankrupt() == true){
+			inAuction[i] = 0;
+			playersRemainingInTheAuction -= 1;
+		}
+		else
+			biddingPlayer = players[i]->getPlayerNum();
+	}
+	for (int i=numberOfPlayers;i<4;i++)
+			inAuction[i] = 0;
+
+	while(playersRemainingInTheAuction > 1){
+		
+		if(inAuction[biddingPlayer]==1){
+			cout << players[biddingPlayer]->getPlayerName() << " - It's your turn now." << endl;
+			cout << "Enter 1 - To Bid;  anything else to Forfeit" << endl;
+			cin >> bidOption;
+			if (bidOption == 1){
+				
+				cout << "Highest Bid so far: " << highestBid << "\nEnter higher value to bid, anything else to forfeit" << endl;
+				cin >> bidIn;
+				if (bidIn > players[biddingPlayer]->getMoneyInHand()){
+					cout << "You do not have that much money. Forfeiting." << endl;
+					playersRemainingInTheAuction -= 1;
+					inAuction[biddingPlayer] = 0;
+					bidIn = -1;
+				}
+				if (bidIn > highestBid)
+					highestBid = bidIn;
+				else{
+					playersRemainingInTheAuction -= 1;
+					inAuction[biddingPlayer] = 0;
+				}
+			}
+			else{
+				playersRemainingInTheAuction -= 1;
+				inAuction[biddingPlayer] = 0;
+			}
+		}
+		biddingPlayer = changeActivePlayer(&players[0],biddingPlayer,numberOfPlayers);
+	}
+	for (int i=0;i<numberOfPlayers;i++){
+		if (inAuction[i] == 1)
+			biddingPlayer = i;	
+	}
+	buyProperty(&players[0], &board[0], propertyPosition, biddingPlayer, highestBid);
 
 }
 
@@ -479,7 +579,7 @@ void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer
 	else
 		cout << "Sorry. The trade could not be completed." << endl;
 	// end
-
+	updatePropertyGroupOwnerships(&players[0],&board[0]);
 }
 
 void manageProperties(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers){
@@ -510,6 +610,7 @@ void manageProperties(Player** players, Property** board, int* activePlayer, con
 			improveProperty(&players[0], &board[0], *activePlayer, propertyToManage);
 	
 	}
+	updatePropertyGroupOwnerships(&players[0],&board[0]);
 }
 
 int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers){
@@ -714,7 +815,7 @@ void improveProperty(Player** players, Property** board, int activePlayer, int p
 		}
 	}
 	else
-		cout << "Sorry. This Property cannot be improved upon." << endl;
+		cout << "Sorry. You cannot improve upon this Property." << endl;
 
 }
 
@@ -766,6 +867,7 @@ void handoverProperty(Player** players, Property** board, int propertyPos, int g
 	}
 	else
 		cout << "This property is not owned by the giving player at all." << endl;
+	updatePropertyGroupOwnerships(&players[0],&board[0]);
 }
 
 void handoverAllProperties(Player** players, Property** board, int* activePlayer, int* bankruptInflictingPlayer){
@@ -776,7 +878,156 @@ void handoverAllProperties(Player** players, Property** board, int* activePlayer
 			handoverProperty(&players[0], &board[0], i, *activePlayer, *bankruptInflictingPlayer);
 		}
 	}
+	updatePropertyGroupOwnerships(&players[0],&board[0]);
 
+}
+
+void updatePropertyGroupOwnerships(Player** players, Property** board){
+	// local variables
+	// end
+
+	// Brown Group
+	if (board[1]->getPropertyOwner() == board[3]->getPropertyOwner() && board[1]->getPropertyOwner() >= 0){
+		
+		board[1]->setPropertyGroupOwned(true);
+		board[3]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[1]->setPropertyGroupOwned(false);
+		board[3]->setPropertyGroupOwned(false);
+	}
+		
+	// Light Blue Group
+	if (board[6]->getPropertyOwner() == board[8]->getPropertyOwner() && board[8]->getPropertyOwner() == board[9]->getPropertyOwner() && board[6]->getPropertyOwner() >= 0){
+		
+		board[6]->setPropertyGroupOwned(true);
+		board[8]->setPropertyGroupOwned(true);
+		board[9]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[6]->setPropertyGroupOwned(false);
+		board[8]->setPropertyGroupOwned(false);
+		board[9]->setPropertyGroupOwned(false);
+	}
+
+	// Pink Group
+
+	if (board[11]->getPropertyOwner() == board[13]->getPropertyOwner() && board[13]->getPropertyOwner() == board[14]->getPropertyOwner() && board[11]->getPropertyOwner() >= 0){
+		
+		board[11]->setPropertyGroupOwned(true);
+		board[13]->setPropertyGroupOwned(true);
+		board[14]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[11]->setPropertyGroupOwned(false);
+		board[13]->setPropertyGroupOwned(false);
+		board[14]->setPropertyGroupOwned(false);
+	}
+
+	// Orange Group
+
+	if (board[16]->getPropertyOwner() == board[18]->getPropertyOwner() && board[18]->getPropertyOwner() == board[19]->getPropertyOwner() && board[16]->getPropertyOwner() >= 0){
+		
+		board[16]->setPropertyGroupOwned(true);
+		board[18]->setPropertyGroupOwned(true);
+		board[19]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[16]->setPropertyGroupOwned(false);
+		board[18]->setPropertyGroupOwned(false);
+		board[19]->setPropertyGroupOwned(false);
+	}
+
+	// Red Group
+	
+	if (board[21]->getPropertyOwner() == board[23]->getPropertyOwner() && board[23]->getPropertyOwner() == board[24]->getPropertyOwner() && board[21]->getPropertyOwner() >= 0){
+		
+		board[21]->setPropertyGroupOwned(true);
+		board[23]->setPropertyGroupOwned(true);
+		board[24]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[21]->setPropertyGroupOwned(false);
+		board[23]->setPropertyGroupOwned(false);
+		board[24]->setPropertyGroupOwned(false);
+	}
+	// Yellow Group
+
+	if (board[26]->getPropertyOwner() == board[27]->getPropertyOwner() && board[27]->getPropertyOwner() == board[29]->getPropertyOwner() && board[26]->getPropertyOwner() >= 0){
+		
+		board[26]->setPropertyGroupOwned(true);
+		board[27]->setPropertyGroupOwned(true);
+		board[29]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[26]->setPropertyGroupOwned(false);
+		board[27]->setPropertyGroupOwned(false);
+		board[29]->setPropertyGroupOwned(false);
+	}
+
+	// Green Group
+
+	if (board[31]->getPropertyOwner() == board[32]->getPropertyOwner() && board[32]->getPropertyOwner() == board[34]->getPropertyOwner() && board[31]->getPropertyOwner() >= 0){
+		
+		board[31]->setPropertyGroupOwned(true);
+		board[32]->setPropertyGroupOwned(true);
+		board[34]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[31]->setPropertyGroupOwned(false);
+		board[32]->setPropertyGroupOwned(false);
+		board[34]->setPropertyGroupOwned(false);
+	}
+
+	// Dark Blue Group
+	
+	if (board[37]->getPropertyOwner() == board[39]->getPropertyOwner() && board[37]->getPropertyOwner() >= 0){
+		
+		board[37]->setPropertyGroupOwned(true);
+		board[39]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[37]->setPropertyGroupOwned(false);
+		board[39]->setPropertyGroupOwned(false);
+	}
+
+	// Railroads
+
+	if (board[5]->getPropertyOwner() == board[15]->getPropertyOwner() && board[15]->getPropertyOwner() == board[25]->getPropertyOwner() && board[25]->getPropertyOwner() == board[35]->getPropertyOwner() && board[5]->getPropertyOwner() >= 0){
+		
+		board[5]->setPropertyGroupOwned(true);
+		board[15]->setPropertyGroupOwned(true);
+		board[25]->setPropertyGroupOwned(true);
+		board[35]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[5]->setPropertyGroupOwned(false);
+		board[15]->setPropertyGroupOwned(false);
+		board[25]->setPropertyGroupOwned(false);
+		board[35]->setPropertyGroupOwned(false);
+	}
+
+	// Utilities
+	
+	if (board[12]->getPropertyOwner() == board[28]->getPropertyOwner() && board[12]->getPropertyOwner() >= 0){
+		
+		board[12]->setPropertyGroupOwned(true);
+		board[28]->setPropertyGroupOwned(true);
+	}
+	else
+	{
+		board[12]->setPropertyGroupOwned(false);
+		board[28]->setPropertyGroupOwned(false);
+	}
 
 }
 
@@ -786,6 +1037,16 @@ void displayTurnOptions(int* playthisTurn){
 	if (*playthisTurn != 0)
 		cout << "1 - Throw Dice" << endl;
 	cout << "2 - Trade\n3 - Manage\n-1 - End Turn\n-999 - Quit Game" << endl;
+
+}
+
+void showAllPlayerDetails(Player** players, const int numberOfPlayers){
+	
+	for(int i=0;i<numberOfPlayers;i++){
+		if(players[i]->getIsBankrupt() == false){
+			cout << players[i]->getPlayerName() << "\nPosition: " << players[i]->getPlayerPosition() <<"  Money: " << players[i]->getMoneyInHand() << "Properties: " << players[i]->getNumPropertiesOwned() << endl;
+		}
+	}
 
 }
 

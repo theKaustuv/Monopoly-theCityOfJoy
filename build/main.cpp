@@ -95,6 +95,7 @@ do{
 	// change turn
 	if (forcedExit == false){
 		activePlayer = changeActivePlayer(&players[0],activePlayer,numberOfPlayers);
+		showAllPlayerDetails(&players[0], numberOfPlayers);
 		cout << "It's "<< players[activePlayer]->getPlayerName() << "'s turn now.\n Press Enter to Proceed.." << endl;
 		cin.ignore( numeric_limits<streamsize>::max(), '\n' );
 	}
