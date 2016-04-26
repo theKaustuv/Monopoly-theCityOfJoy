@@ -65,7 +65,16 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 	int diceThrowOutcome;
 	bool* doubleDice;
 	*doubleDice = false;
+	string useCardString;
+	string useBailString;
+	string landedPropertyType;
+	int landedPropertyOwnership;
+	int buyAuction = -1;
+	bool buyAuctionFlag = false;
+	int CCNumber;
+	int chanceNumber;
 	/* end */
+
 	if (*playthisTurn == 0)
 		cout << "You have no more Dice Rolls left for this turn.\nYou can trade, Manage your properties or End your turn" << endl;
 	else{
@@ -76,28 +85,264 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 		else
 			(*playthisTurn) = 0;
 
+		// setting player position
 		if (*playthisTurn > 3){
 			sendPlayerToJail(&players[0], activePlayer);
 			(*playthisTurn) = 0;
 		}
 		else{
-			if (players[*activePlayer]->getIsInJail() != -1){
+
+			if (players[*activePlayer]->getIsInJail() >= 0){
+				players[*activePlayer]->setIsInJail(players[*activePlayer]->getIsInJail() + 1);
 				if (*doubleDice == true){
-				//gets outta jail
-				
+					
+					players[*activePlayer]->setIsInJail(-1);
+					updatePlayerPosition(&players[0], activePlayer, diceThrowOutcome);
 				}
-			//todo
-			
+				else{
+					if (players[*activePlayer]->getNumGetOutOfJailFreeCard() > 0){
+						cout << "Do you want to use a Get Out Of Jail Free Card to get out of Jail? (press 'y' for yes, anything else to skip)" << endl;
+						getline(cin >> ws,useCardString);
+						if (useCardString == "y"){
+							players[*activePlayer]->setNumGetOutOfJailFreeCard(players[*activePlayer]->getNumGetOutOfJailFreeCard() - 1);
+							players[*activePlayer]->setIsInJail(-1);
+							updatePlayerPosition(&players[0], activePlayer, diceThrowOutcome);
+						}
+					}
+					if (players[*activePlayer]->getIsInJail() >= 3){
+						cout << players[*activePlayer]->getPlayerName() << " posted bail" << endl;
+						players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() - 50);
+						players[*activePlayer]->setIsInJail(-1);
+						updatePlayerPosition(&players[0], activePlayer, diceThrowOutcome);
+					}
+					else if (players[*activePlayer]->getIsInJail() >= 0){
+						cout << "Do you want to post bail of 50 to get out of Jail? (press 'y' for yes, anything else to skip)" << endl;
+						getline(cin >> ws,useBailString);
+						if (useBailString == "y"){
+							players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() - 50);
+							players[*activePlayer]->setIsInJail(-1);
+							updatePlayerPosition(&players[0], activePlayer, diceThrowOutcome);
+						}
+					}
+
+				}
+			}
+			else{
+				updatePlayerPosition(&players[0], activePlayer, diceThrowOutcome);
 			}
 
-
-			//todo
-
 		}
+		// end
 
+		landedPropertyType = board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyType();
+		landedPropertyOwnership = board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner();
+		if( board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyMortgage() == false ){
+			if (landedPropertyType == "RealEstate"){
+			
+				if (landedPropertyOwnership == *activePlayer);
+				else if (landedPropertyOwnership >= 0){
+
+						if (board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyGroupOwned() == false)
+							handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[0]);
+						else{
+							if (board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.getHotel() == true)
+								handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[5]);
+							else
+								handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.getNumOfHouses()]);
+						}
+				
+				}
+				else{
+					showTitleDeed(&board[0], players[*activePlayer]->getPlayerPosition());
+
+					while(buyAuctionFlag == false){
+
+						cout << "Enter 1 to Buy Property, 2 to Trade with Other Players, 3 to Manage your own properties, 4 - to Pass for Auction:  ";
+						cin >> buyAuction;
+						if (buyAuction == 1){
+					
+							if (board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyValue() > players[*activePlayer]->getMoneyInHand()){
+						
+								cout << "You do not have enough money to buy this property. Passing for Auction!" << endl;
+								buyAuction = 4;
+							}
+							else{
+							
+								buyProperty(&players[0], &board[0], activePlayer);
+								buyAuctionFlag = true;
+								cout << "Congratulations. You bought yourself this property." << endl;
+							}
+						}
+						if (buyAuction == 2)
+							tradeWithOtherPlayers(&players[0], &board[0], activePlayer, numberOfPlayers);
+						else if (buyAuction == 3)
+							manageProperties(&players[0], &board[0], activePlayer, numberOfPlayers);
+						else if (buyAuction == 4){
+						
+							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition());
+							buyAuctionFlag = true;
+						}
+
+					}
+				}
+			
+			}
+			else if (landedPropertyType == "Railroad"){
+
+				
+				if (landedPropertyOwnership == *activePlayer);
+				else if (landedPropertyOwnership >= 0){
+
+					handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[players[ board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner() ]->getNumRailroadsOwned() - 1]);
+				}
+				else{
+					showTitleDeed(&board[0], players[*activePlayer]->getPlayerPosition());
+
+					while(buyAuctionFlag == false){
+
+						cout << "Enter 1 to Buy Property, 2 to Trade with Other Players, 3 to Manage your own properties, 4 - to Pass for Auction:  ";
+						cin >> buyAuction;
+						if (buyAuction == 1){
+					
+							if (board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyValue() > players[*activePlayer]->getMoneyInHand()){
+						
+								cout << "You do not have enough money to buy this property. Passing for Auction!" << endl;
+								buyAuction = 4;
+							}
+							else{
+							
+								buyProperty(&players[0], &board[0], activePlayer);
+								buyAuctionFlag = true;
+								cout << "Congratulations. You bought yourself this property." << endl;
+							}
+						}
+						if (buyAuction == 2)
+							tradeWithOtherPlayers(&players[0], &board[0], activePlayer, numberOfPlayers);
+						else if (buyAuction == 3)
+							manageProperties(&players[0], &board[0], activePlayer, numberOfPlayers);
+						else if (buyAuction == 4){
+						
+							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition());
+							buyAuctionFlag = true;
+						}
+
+					}
+				}
+			
+		
+			}
+			else if (landedPropertyType == "Utility"){
+			
+					
+				if (landedPropertyOwnership == *activePlayer);
+				else if (landedPropertyOwnership >= 0){
+
+					handoverMoney(&players[0], *activePlayer, board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner(), (diceThrowOutcome)*( board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[players[ board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner() ]->getNumUtilitiesOwned() - 1] ));
+				}
+				else{
+					showTitleDeed(&board[0], players[*activePlayer]->getPlayerPosition());
+
+					while(buyAuctionFlag == false){
+
+						cout << "Enter 1 to Buy Property, 2 to Trade with Other Players, 3 to Manage your own properties, 4 - to Pass for Auction:  ";
+						cin >> buyAuction;
+						if (buyAuction == 1){
+					
+							if (board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyValue() > players[*activePlayer]->getMoneyInHand()){
+						
+								cout << "You do not have enough money to buy this property. Passing for Auction!" << endl;
+								buyAuction = 4;
+							}
+							else{
+							
+								buyProperty(&players[0], &board[0], activePlayer);
+								buyAuctionFlag = true;
+								cout << "Congratulations. You bought yourself this property." << endl;
+							}
+						}
+						if (buyAuction == 2)
+							tradeWithOtherPlayers(&players[0], &board[0], activePlayer, numberOfPlayers);
+						else if (buyAuction == 3)
+							manageProperties(&players[0], &board[0], activePlayer, numberOfPlayers);
+						else if (buyAuction == 4){
+						
+							auctionProperty(&players[0], &board[0], players[*activePlayer]->getPlayerPosition());
+							buyAuctionFlag = true;
+						}
+
+					}
+				}
+			
+		
+			}
+			else if (landedPropertyType == "CC"){
+				
+				CCNumber = randomNum(1, 2, 1);
+
+				if (CCNumber == 1){
+					cout << "Congratulations. You won 200." << endl;
+					players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() + 200);
+				}
+				else if (CCNumber == 2){
+					cout << "Congratulations. You lost 10." << endl;
+					players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() - 10);
+				}
+		
+		
+			}
+			else if (landedPropertyType == "Chance"){
+				chanceNumber = randomNum(1, 2, 1);
+
+				if (chanceNumber == 1){
+					cout << "OOPS. You lost 150." << endl;
+					players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() - 150);
+				}
+				else if (chanceNumber == 2){
+					cout << "Congratulations. You won 50." << endl;
+					players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() + 50);
+				}
+		
+			}
+			else if (landedPropertyType == "MoneyProperties"){
+				
+				players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() - board[ players[*activePlayer]->getPlayerPosition() ]->realEstate.rent[0]);
+			}
+			else if (landedPropertyType == "SpecialProperties"){
+				
+				if ( board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyName() == "Free Parking");
+				else if ( board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyName() == "Jail" );
+				else if ( board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyName() == "Go To Jail" ){
+					
+					cout << "OOPS. You have been sent to Jail." << endl;
+					sendPlayerToJail(&players[0], activePlayer);
+				}
+		
+		
+			}
+		}
 
 	
 	}
+}
+
+void updatePlayerPosition(Player** players, int* activePlayer, int diceThrowOutcome){
+	//todo
+
+}
+
+void showTitleDeed(Property** board, int propertyPosition){
+	//todo
+
+}
+
+void buyProperty(Player** players, Property** board, int* activePlayer){
+	//todo
+
+}
+
+void auctionProperty(Player** players, Property** board, int propertyPosition){
+	//todo
+
 }
 
 void tradeWithOtherPlayers(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers){
@@ -375,6 +620,7 @@ void mortgageUnmortgageProperty(Player** players, Property** board, int activePl
 		board[propertyToManage]->realEstate.setNumOfHouses(0);
 
 		board[propertyToManage]->setPropertyMortgage(true);
+		players[activePlayer]->setNumPropertiesMortgaged(players[activePlayer]->getNumPropertiesMortgaged()+1);
 		players[activePlayer]->setMoneyInHand( players[activePlayer]->getMoneyInHand() + 0.5*board[propertyToManage]->getPropertyValue() );
 	
 		cout << "Mortgaging Done Successfully." << endl;
@@ -384,6 +630,8 @@ void mortgageUnmortgageProperty(Player** players, Property** board, int activePl
 		if (players[activePlayer]->getMoneyInHand() >= 0.6*board[propertyToManage]->getPropertyValue()){
 
 			board[propertyToManage]->setPropertyMortgage(false);
+			
+			players[activePlayer]->setNumPropertiesMortgaged(players[activePlayer]->getNumPropertiesMortgaged()-1);
 			players[activePlayer]->setMoneyInHand( players[activePlayer]->getMoneyInHand() - 0.6*board[propertyToManage]->getPropertyValue() );
 			cout << "Unmortgaging Done Successfully." << endl;
 		}

@@ -18,8 +18,16 @@ void displayTurnOptions(int* playthisTurn);
 
 
 void sendPlayerToJail(Player** players, int* activePlayer);
-void throwDice(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers, int* playthisTurn, int* bankruptInflictingPlayer);
+
+void updatePlayerPosition(Player** players, int* activePlayer, int diceThrowOutcome);
 //todo
+void showTitleDeed(Property** board, int propertyPosition);
+//todo
+void buyProperty(Player** players, Property** board, int* activePlayer);
+//todo
+void auctionProperty(Player** players, Property** board, int propertyPosition);
+// todo
+void throwDice(Player** players, Property** board, int* activePlayer, const int* numberOfPlayers, int* playthisTurn, int* bankruptInflictingPlayer);
 
 int chooseTradingPlayer(Player** players, int activePlayer, const int numberOfPlayers);
 void displayTradingProperties(Player** players, Property** board, int activePlayer, int tradingPlayer);

@@ -22,6 +22,7 @@ improvementCost( ( (Pos/10)+1 )*50  )
 
 }
 
+
 // Getters and Setters
 
 void RealEstate::setNumOfHouses(int n){

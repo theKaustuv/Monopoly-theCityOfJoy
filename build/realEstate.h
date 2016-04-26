@@ -12,8 +12,10 @@ class RealEstate
 		bool getHotel();
 		int getImprovementCost();
 
+		int rent[6];
+
     private:
-        int rent[6];
+        
         int numOfHouses;
         bool hotel;
         const int improvementCost;
