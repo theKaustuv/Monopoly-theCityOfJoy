@@ -78,7 +78,8 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 		cout << "You have no more Dice Rolls left for this turn.\nYou can trade, Manage your properties or End your turn" << endl;
 	else{
 		diceThrowOutcome = rollTwoDice(&doubleDice);
-		
+		cout << "You rolled " << diceThrowOutcome << endl;
+
 		if (doubleDice == true)
 			(*playthisTurn) += 1;
 		else
@@ -132,6 +133,7 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 
 		}
 		// end
+		cout << "You are now at " << board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyName() << endl;
 
 		landedPropertyType = board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyType();
 		landedPropertyOwnership = board[ players[*activePlayer]->getPlayerPosition() ]->getPropertyOwner();
@@ -333,8 +335,11 @@ void throwDice(Player** players, Property** board, int* activePlayer, const int*
 void updatePlayerPosition(Player** players, int* activePlayer, int diceThrowOutcome){
 	
 	players[*activePlayer]->setPlayerPosition(players[*activePlayer]->getPlayerPosition() + diceThrowOutcome);
-	if (players[*activePlayer]->getPlayerPosition() > 39)
+	if (players[*activePlayer]->getPlayerPosition() > 39){
+		
 		players[*activePlayer]->setPlayerPosition(players[*activePlayer]->getPlayerPosition() - 40);
+		players[*activePlayer]->setMoneyInHand(players[*activePlayer]->getMoneyInHand() + 200);	
+	}
 }
 
 void showTitleDeed(Property** board, int propertyPosition){
