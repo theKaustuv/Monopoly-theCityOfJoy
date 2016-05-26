@@ -1,0 +1,29 @@
+﻿Build started 5/26/2016 12:17:02 PM.
+     1>Project "D:\Kaustuv\Projects and Applications\Monopoly-theCityOfJoy\build\monopoly\monopoly.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\BaseFunctions.cpp ..\main.cpp ..\Player.cpp ..\Property.cpp ..\RealEstate.cpp
+         RealEstate.cpp
+         Property.cpp
+         Player.cpp
+         main.cpp
+         BaseFunctions.cpp
+     1>d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp(721): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp(725): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp(730): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp(741): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp(807): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp(1094): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>d:\kaustuv\projects and applications\monopoly-thecityofjoy\build\basefunctions.cpp(1108): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         Generating Code...
+       Link:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Kaustuv\Projects and Applications\Monopoly-theCityOfJoy\build\monopoly\Debug\monopoly.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Kaustuv\Projects and Applications\Monopoly-theCityOfJoy\build\monopoly\Debug\monopoly.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Kaustuv\Projects and Applications\Monopoly-theCityOfJoy\build\monopoly\Debug\monopoly.lib" /MACHINE:X86 Debug\BaseFunctions.obj
+         Debug\main.obj
+         Debug\Player.obj
+         Debug\Property.obj
+         Debug\RealEstate.obj
+         monopoly.vcxproj -> D:\Kaustuv\Projects and Applications\Monopoly-theCityOfJoy\build\monopoly\Debug\monopoly.exe
+     1>Done Building Project "D:\Kaustuv\Projects and Applications\Monopoly-theCityOfJoy\build\monopoly\monopoly.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.27
